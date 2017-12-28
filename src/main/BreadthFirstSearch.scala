@@ -4,6 +4,8 @@ import scala.collection.mutable.{HashSet, Queue}
 
 object BreadthFirstSearch {
 
+
+
   def bfs(startState : State) = {
 
     val seen : HashSet[State] = HashSet()

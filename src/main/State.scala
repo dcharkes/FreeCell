@@ -67,7 +67,7 @@ case class State(
         val state = State(free, foundationH, foundationS, foundationD, foundationC, (columns - column + newColumn).filter(_.cards.nonEmpty), Some(this), this.moves+1)
         result ++= state.addFree(card, this)
         result ++= state.addFoundation(card, this)
-        result ++= (state.addColumns(card, this) - this)
+//        result ++= (state.addColumns(card, this) - this) // disabling this gives a 400 moves solution!? (every move needs to go through a free space now)
       }
     }
     result
@@ -78,6 +78,8 @@ case class State(
   }
 
   def score2 : Int = 10 * score - free.size
+
+  def score3 : Int = 10000 * score + 1000 * (8 - columns.size) + 10 * columns.map(_.score).sum - free.size // doesnt work, finds a 5000 moves solution with dfs
 
   def stateSequence : List[State]  = {
     var elem = this

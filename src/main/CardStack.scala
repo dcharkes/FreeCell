@@ -21,4 +21,18 @@ case class CardStack(cards : List[Card]) {
     case head :: _ => Some(head)
     case _ => None
   }
+
+  def score : Int = {
+    if(cards.isEmpty)
+      return 0
+    var result = 1
+    val it = cards.iterator
+    var prev = it.next()
+    while(it.hasNext){
+      val elem = it.next()
+      if(prev.columnFitOn(elem))
+        result += 1
+    }
+    return result
+  }
 }
