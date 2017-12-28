@@ -20,7 +20,7 @@ object DepthFirstSearch {
     var longestPathRound = 0
 
     while(stack.nonEmpty){
-      val nextStates = stack.pop().nextStates
+      val nextStates = stack.pop().nextStates.toList.sortBy(_.score2) //finds 1100 moves solution after 1.1 mil states (inverse score finds 6000 moves solution almost immediately)
       for(elem <- nextStates){
         allStates += 1
         if(!seen.contains(elem)){
