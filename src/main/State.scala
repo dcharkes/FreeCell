@@ -76,4 +76,44 @@ case class State(
   def score : Int = {
     (foundationH++foundationC++foundationS++foundationD).map(_.getNumber).sum
   }
+
+  def score2 : Int = 10 * score - free.size
+
+  def stateSequence : List[State]  = {
+    var elem = this
+    var states = List(elem)
+    while(elem.previous.nonEmpty){
+      elem = elem.previous.get
+      states = elem :: states
+    }
+    states
+  }
+
+  def cardMoved : String = {
+    if(previous.nonEmpty){
+      val newFree: Set[Card] = free -- previous.get.free
+      if(newFree.nonEmpty)
+        return "" + newFree.iterator.next() + " to free"
+      if(foundationH != previous.get.foundationH)
+        return "" + foundationH.get + " to foundation"
+      if(foundationS != previous.get.foundationS)
+        return "" + foundationS.get + " to foundation"
+      if(foundationD != previous.get.foundationD)
+        return "" + foundationD.get + " to foundation"
+      if(foundationC != previous.get.foundationC)
+        return "" + foundationC.get + " to foundation"
+      val editedColumns = columns -- previous.get.columns
+      val editedColumn = editedColumns.filter(_.cards.nonEmpty).filter(c => previous.get.columns.contains(c.removeFirst().get) || c.cards.size == 1)
+      if(editedColumn.nonEmpty) {
+        val column = editedColumn.iterator.next()
+        val card = column.getFirst.get
+        val onTopOf = column.removeFirst().flatMap(_.getFirst)
+        if(onTopOf.nonEmpty)
+          return "" + editedColumn.iterator.next().getFirst.get + " to " + onTopOf.get
+        else
+          return "" + editedColumn.iterator.next().getFirst.get + " to empty column"
+      }
+    }
+    "?"
+  }
 }

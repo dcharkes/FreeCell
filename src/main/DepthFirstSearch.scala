@@ -5,7 +5,7 @@ import scala.collection.mutable.HashSet
 
 object DepthFirstSearch {
 
-  def dfs(startState : State) = {
+  def dfs(startState : State) : State = {
 
     val seen : HashSet[State] = HashSet()
     seen.add(startState)
@@ -39,6 +39,7 @@ object DepthFirstSearch {
             pathLength += 1
           }
           println(pathLength)
+          return elem
         }
         if(elem.moves < shortestPathRound)
           shortestPathRound = elem.moves
@@ -53,7 +54,7 @@ object DepthFirstSearch {
       }
     }
 
-    seen
+    null
   }
 
 }

@@ -24,5 +24,17 @@ object DepthFirstSearchTest extends App {
 //  state617.nextStates.map(println)
 
   // finds solution in 1000000 iterations
-  DepthFirstSearch.dfs(state617)
+  val endState = DepthFirstSearch.dfs(state617)
+  val stateSequence = endState.stateSequence
+//  val moves = stateSequence.map(_.cardMoved)
+  var i = 0
+  for(elem <- stateSequence){
+    println(elem.cardMoved)
+    if(i%10==0) {
+      println(elem.moves)
+      println(elem)
+    }
+    i += 1
+  }
+//  moves.map(println)
 }
