@@ -1,9 +1,9 @@
 package main
 
-case class Card(val number: Int) {
+case class Card(number: Int) {
 
   override def toString: String = number match {
-    case 1 => "HA"
+    case 1 => "HA" //red
     case 2 => "H2"
     case 3 => "H3"
     case 4 => "H4"
@@ -16,7 +16,7 @@ case class Card(val number: Int) {
     case 11 => "HJ"
     case 12 => "HQ"
     case 13 => "HK"
-    case 14 => "SA"
+    case 14 => "SA" //black
     case 15 => "S2"
     case 16 => "S3"
     case 17 => "S4"
@@ -29,7 +29,7 @@ case class Card(val number: Int) {
     case 24 => "SJ"
     case 25 => "SQ"
     case 26 => "SK"
-    case 27 => "DA"
+    case 27 => "DA" //red
     case 28 => "D2"
     case 29 => "D3"
     case 30 => "D4"
@@ -42,7 +42,7 @@ case class Card(val number: Int) {
     case 37 => "DJ"
     case 38 => "DQ"
     case 39 => "DK"
-    case 40 => "CA"
+    case 40 => "CA" //black
     case 41 => "C2"
     case 42 => "C3"
     case 43 => "C4"
@@ -58,4 +58,45 @@ case class Card(val number: Int) {
     case _ => "??"
   }
 
+  def isHearts : Boolean = number >= 1 && number <= 13
+  def isSpades : Boolean = number >= 14 && number <= 26
+  def isDiamonds : Boolean = number >= 27 && number <= 39
+  def isClubs : Boolean = number >= 40 && number <= 52
+
+  def isRed = isHearts || isDiamonds
+  def isBlack = isSpades || isClubs
+
+  def getNumber : Int = {
+    if(isHearts) return number
+    if(isSpades) return number - 13
+    if(isDiamonds) return number - 26
+    return number - 39
+  }
+
+  def columnFitOn(other:Card) = {
+    val diffColor = isRed && other.isBlack || isBlack && other.isRed
+    val diffNumber = other.getNumber - getNumber
+    diffNumber == 1 && diffColor
+  }
+
+}
+
+object Card{
+  def apply(text:String) : Card = {
+      val suit = text.charAt(0) match {
+        case 'H' => 0
+        case 'S' => 13
+        case 'D' => 26
+        case 'C' => 39
+      }
+      val number = text.charAt(1) match {
+        case 'A' => 1
+        case 'X' => 10
+        case 'J' => 11
+        case 'Q' => 12
+        case 'K' => 13
+        case _ => Integer.parseInt(text.charAt(1).toString)
+      }
+      Card(suit+number)
+  }
 }
